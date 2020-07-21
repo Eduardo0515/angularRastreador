@@ -25,33 +25,15 @@ export class VisualizarUbicacionMapaComponent implements OnInit {
       subscribeKey: 'sub-c-b1ea6414-c791-11ea-b3f2-c27cb65b13f4'
     });
     this.pubnub.subscribe({ channels: [this.pnChannel] });
-    var messages = this.pubnub.getMessage("raspi-tracker");
-    console.log(messages);
   }
 
   ngOnInit(): void {
     this.inicializarMapa();
-    /*this.pubnub.addListener({message: function(message){
-      console.log(message)
-    }})*/
+    this.pubnub.addListener({message: function(message){
+      console.log(message);
+    }})
     //this.ejecutar()
   }
-
-  private inicializarMapa(): void {
-    this.mapa = L.map('mapa').setView([0, 0], 5);
-    L.tileLayer(this.urlAPIMapa, {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(this.mapa);
-    
-  }
-
-  ejecutar = ()=>{
-    var messages = this.pubnub.getMessage("raspi-tracker");
-    console.log(messages);
-  setInterval(this.ejecutar,10000);
-  }
-
 
   private cambiarPosMarcador = function(payload){
     let marcador = null;
@@ -67,6 +49,24 @@ export class VisualizarUbicacionMapaComponent implements OnInit {
       }).addTo(this.mapa);
     }
   }
+
+  private inicializarMapa(): void {
+    this.mapa = L.map('mapa').setView([0, 0], 5);
+    L.tileLayer(this.urlAPIMapa, {
+      maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(this.mapa);
+    
+  }
+
+  /*ejecutar = ()=>{
+    var messages = this.pubnub.getMessage("raspi-tracker");
+    console.log(messages);
+  setInterval(this.ejecutar,10000);
+  }*/
+
+
+  
 
   medirDistancia() {
     var distance = this.mapa.distance([16.752706, -93.133080], [16.752434, -93.131710]);
