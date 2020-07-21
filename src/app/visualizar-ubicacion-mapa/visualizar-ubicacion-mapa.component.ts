@@ -59,11 +59,11 @@ export class VisualizarUbicacionMapaComponent implements OnInit {
     
   }
 
-  /*ejecutar = ()=>{
-    var messages = this.pubnub.getMessage("raspi-tracker");
-    console.log(messages);
-  setInterval(this.ejecutar,10000);
-  }*/
+  ejecutar = ()=>{
+    //var messages = this.pubnub.getMessage("raspi-tracker");
+   // console.log(messages);
+  //setInterval(this.ejecutar,10000);
+  }
 
 
   
