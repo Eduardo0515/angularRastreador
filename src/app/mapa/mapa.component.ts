@@ -21,10 +21,12 @@ export class MapaComponent implements OnInit {
       latitud: this.rutaActiva.snapshot.params.latitud,
       longitud: this.rutaActiva.snapshot.params.longitud
     }
-    
+
     this.rutaActiva.params.subscribe(
       (params: Params) => {
-        var mark = L.marker([params.latitud, params.longitud]).addTo(this.mapa);
+        var mark = L.marker([params.latitud, params.longitud], {
+          icon: this.iconoMarcador
+        }).addTo(this.mapa);
       }
     )
   }
@@ -36,4 +38,10 @@ export class MapaComponent implements OnInit {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.mapa);
   }
+
+  iconoMarcador = L.icon({
+    iconSize: [60, 60],
+    iconAnchor: [30, 60],
+    iconUrl: 'assets/marcador.png'
+  });
 }

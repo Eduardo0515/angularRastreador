@@ -49,7 +49,9 @@ export class ColocarMarcadoresComponent implements OnInit {
         };
       })
       if (this.Marcador.length == 1) {
-        this.marcador = L.marker([this.Marcador[0].latitud, this.Marcador[0].longitud])
+        this.marcador = L.marker([this.Marcador[0].latitud, this.Marcador[0].longitud], {
+          icon: this.iconoMarcador
+        })
           .bindPopup('Aquí').openPopup();
         this.mapa.addLayer(this.marcador);
         this.distancia = this.Marcador[0].distancia;
@@ -97,10 +99,18 @@ export class ColocarMarcadoresComponent implements OnInit {
       } else if (!this.isMarcadorColocadoMapa && this.permitirColocarMarcador) {
         this.latitud = latitudLongitud.lat;
         this.longitud = latitudLongitud.lng;
-        this.marcador = L.marker([latitudLongitud.lat, latitudLongitud.lng])
+        this.marcador = L.marker([latitudLongitud.lat, latitudLongitud.lng], {
+          icon: this.iconoMarcador
+        })
           .addTo(this.mapa);
         this.isMarcadorColocadoMapa = true;
       }
     })
   }
+
+  iconoMarcador = L.icon({
+    iconSize: [60, 60],
+    iconAnchor: [30, 60],
+    iconUrl: 'assets/marcador.png'
+  });
 }
