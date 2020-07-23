@@ -11,7 +11,7 @@ const routes: Routes =[
   {path: 'visualizar', component: VisualizarUbicacionMapaComponent},
   {path: 'insertar', component: ColocarMarcadoresComponent},
   {path: 'datosAlmacenados', component: AnalisisComponent},
-  {path: 'mapa', component: MapaComponent}
+  {path: 'mapa/:latitud/:longitud', component: MapaComponent}
 ]
 
 @NgModule({

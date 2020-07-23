@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {CrudService} from '../service/crud.service'
+import {ActivatedRoute, Params} from '@angular/router';
 
 @Component({
   selector: 'app-analisis',

@@ -21,7 +21,7 @@
                     <td>{{ubicacion.fecha | date:'medium'}}</td>
                     <td>{{ubicacion.latitud}}</td>
                     <td>{{ubicacion.longitud}}</td>
-                    <td><a href="http://">Ver mapa</a></td>
+                    <td><a [routerLink]= "['/mapa',ubicacion.latitud,ubicacion.longitud]">Ver en mapa</a></td>
                 </tr>
             </tbody>
         </table>

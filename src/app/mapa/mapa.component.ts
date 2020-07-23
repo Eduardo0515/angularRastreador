@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Params} from '@angular/router';
 import * as L from 'leaflet';
 
 @Component({
@@ -9,11 +10,22 @@ import * as L from 'leaflet';
 export class MapaComponent implements OnInit {
   public mapa;
   urlAPIMapa = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
+  marcador:{latitud: number, longitud:number};
 
-  constructor() { }
+
+  constructor( private rutaActiva: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.inicializarMapa();
+    this.marcador = {
+      latitud: this.rutaActiva.snapshot.params.latitud,
+      longitud: this.rutaActiva.snapshot.params.longitud
+    }
+    this.rutaActiva.params.subscribe(
+      (params: Params) => {
+        var mark = L.marker([params.latitud, params.longitud]).addTo(this.mapa);
+      }
+    )
   }
 
   private inicializarMapa(): void {
