@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CrudService } from '../service/crud.service';
-import {Router} from '@angular/router';
 import * as L from 'leaflet';
 
 @Component({
@@ -9,17 +9,17 @@ import * as L from 'leaflet';
   styleUrls: ['./colocar-marcadores.component.css']
 })
 export class ColocarMarcadoresComponent implements OnInit {
-  Marcador: any;
   mapa;
+  Marcador: any;
+  marcador = null;
   latitud: number;
   longitud: number;
-  urlAPIMapa = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
   distancia: number;
-  isMarcadorColocadoMapa: boolean = false;
-  marcador = null;
   idMarcador: number;
   isMarcadorGuardadoBD: boolean = false;
   permitirColocarMarcador: boolean = true;
+  isMarcadorColocadoMapa: boolean = false;
+  urlAPIMapa = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
 
   constructor(public crudService: CrudService, public router: Router) { }
 
@@ -27,6 +27,15 @@ export class ColocarMarcadoresComponent implements OnInit {
     this.inicializarMapa();
     this.agregarQuitarMarcadorClick();
     this.obtenerMarcador();
+  }
+
+  private inicializarMapa(): void {
+    this.mapa = L.map('mapa').setView([16.752769803087457, -93.11428070068361], 13);
+    L.tileLayer(this.urlAPIMapa, {
+      maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(this.mapa);
+    this.mapa.doubleClickZoom.disable();
   }
 
   obtenerMarcador() {
@@ -51,15 +60,6 @@ export class ColocarMarcadoresComponent implements OnInit {
     })
   }
 
-  private inicializarMapa(): void {
-    this.mapa = L.map('mapa').setView([16.752769803087457, -93.11428070068361], 13);
-    L.tileLayer(this.urlAPIMapa, {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(this.mapa);
-    this.mapa.doubleClickZoom.disable();
-  }
-
   crearMarcador() {
     let Marcador = {};
     Marcador['latitud'] = this.latitud;
@@ -76,6 +76,16 @@ export class ColocarMarcadoresComponent implements OnInit {
     console.log('Marcador creado');
   }
 
+  eliminarMarcador() {
+    this.mapa.removeLayer(this.marcador);
+    this.permitirColocarMarcador = true;
+    this.crudService.eliminarMarcador(this.idMarcador);
+    this.isMarcadorColocadoMapa = false;
+    this.isMarcadorGuardadoBD = false;
+    this.distancia = undefined;
+    console.log('Marcador eliminado');
+  }
+
   agregarQuitarMarcadorClick() {
     this.mapa.on('dblclick', e => {
       let latitudLongitud = this.mapa.mouseEventToLatLng(e.originalEvent);
@@ -83,7 +93,7 @@ export class ColocarMarcadoresComponent implements OnInit {
       if (this.isMarcadorColocadoMapa) {
         this.mapa.removeLayer(this.marcador);
         this.isMarcadorColocadoMapa = false;
-        
+
       } else if (!this.isMarcadorColocadoMapa && this.permitirColocarMarcador) {
         this.latitud = latitudLongitud.lat;
         this.longitud = latitudLongitud.lng;
@@ -92,15 +102,5 @@ export class ColocarMarcadoresComponent implements OnInit {
         this.isMarcadorColocadoMapa = true;
       }
     })
-  }
-
-  eliminarMarcador() {    
-    this.mapa.removeLayer(this.marcador);
-    this.permitirColocarMarcador = true;
-    this.crudService.eliminarMarcador(this.idMarcador);
-    this.isMarcadorColocadoMapa = false;
-    this.isMarcadorGuardadoBD = false;
-    this.distancia = undefined;
-    console.log('Marcador eliminado');
   }
 }

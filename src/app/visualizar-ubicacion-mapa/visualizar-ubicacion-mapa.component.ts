@@ -3,27 +3,26 @@ import { CrudService } from '../service/crud.service'
 import * as L from 'leaflet';
 import { PubNubAngular } from 'pubnub-angular2';
 
-
 @Component({
   selector: 'app-visualizar-ubicacion-mapa',
   templateUrl: './visualizar-ubicacion-mapa.component.html',
   styleUrls: ['./visualizar-ubicacion-mapa.component.css'],
   providers: [PubNubAngular]
 })
+
 export class VisualizarUbicacionMapaComponent implements OnInit {
   public mapa;
   rango;
-  MarcadorCentral: any;
-  pnChannel = "raspi-tracker";
-  pubnub: PubNubAngular;
-  marcador = null;
-  urlAPIMapa = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
-  fueraRango: boolean = false;
   latitudFuera;
   longitudFuera;
+  marcador = null;
+  MarcadorCentral: any;
+  pubnub: PubNubAngular;
+  pnChannel = "raspi-tracker";
   fecha: number = Date.now();
+  fueraRango: boolean = false;
   marcadorExistente: boolean = false;
-
+  urlAPIMapa = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
 
   constructor(pubnub: PubNubAngular, public crudService: CrudService) {
     this.pubnub = pubnub;
@@ -46,6 +45,42 @@ export class VisualizarUbicacionMapaComponent implements OnInit {
       maxZoom: 18,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.mapa);
+  }
+
+  obtenerMarcador() {
+    this.crudService.get_Marcador().subscribe(data => {
+      this.MarcadorCentral = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          latitud: e.payload.doc.data()['latitud'],
+          longitud: e.payload.doc.data()['longitud'],
+          distancia: e.payload.doc.data()['distancia'],
+        };
+      })
+      if (this.MarcadorCentral.length == 1) {
+        this.marcadorExistente = true
+        var circle = L.circle([this.MarcadorCentral[0].latitud, this.MarcadorCentral[0].longitud], this.MarcadorCentral[0].distancia / 40, {
+          color: 'orange'
+        }).addTo(this.mapa);
+        this.rango = L.circle([this.MarcadorCentral[0].latitud, this.MarcadorCentral[0].longitud], this.MarcadorCentral[0].distancia).addTo(this.mapa);
+      }
+    })
+  }
+
+  crearUbicacionGanadoAlejado() {
+    let Ubicacion = {};
+    Ubicacion['latitud'] = this.latitudFuera;
+    Ubicacion['longitud'] = this.longitudFuera;
+    Ubicacion['fecha'] = this.fecha;
+    this.crudService.crearUbicacionFueraLimite(Ubicacion).then(res => {
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
+  medirDistancia(lat, lng, latCircle, lngCircle) {
+    var distance = this.mapa.distance([lat, lng], [latCircle, lngCircle]);
+    return distance;
   }
 
   cambiarPosicionMarcador = function () {
@@ -82,42 +117,6 @@ export class VisualizarUbicacionMapaComponent implements OnInit {
 
         }
       }
-    });
-  }
-
-  medirDistancia(lat, lng, latCircle, lngCircle) {
-    var distance = this.mapa.distance([lat, lng], [latCircle, lngCircle]);
-    return distance;
-  }
-
-  obtenerMarcador() {
-    this.crudService.get_Marcador().subscribe(data => {
-      this.MarcadorCentral = data.map(e => {
-        return {
-          id: e.payload.doc.id,
-          latitud: e.payload.doc.data()['latitud'],
-          longitud: e.payload.doc.data()['longitud'],
-          distancia: e.payload.doc.data()['distancia'],
-        };
-      })
-      if (this.MarcadorCentral.length == 1) {
-        this.marcadorExistente = true
-        var circle = L.circle([this.MarcadorCentral[0].latitud, this.MarcadorCentral[0].longitud], 20, {
-          color: 'orange'
-        }).addTo(this.mapa);
-        this.rango = L.circle([this.MarcadorCentral[0].latitud, this.MarcadorCentral[0].longitud], this.MarcadorCentral[0].distancia).addTo(this.mapa);
-      }
-    })
-  }
-
-  crearUbicacionGanadoAlejado() {
-    let Ubicacion = {};
-    Ubicacion['latitud'] = this.latitudFuera;
-    Ubicacion['longitud'] = this.longitudFuera;
-    Ubicacion['fecha'] = this.fecha;
-    this.crudService.crearUbicacionFueraLimite(Ubicacion).then(res => {
-    }).catch(error => {
-      console.log(error);
     });
   }
 

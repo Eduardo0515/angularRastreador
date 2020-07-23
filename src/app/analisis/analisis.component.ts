@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {CrudService} from '../service/crud.service'
-import {ActivatedRoute, Params} from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
+import { CrudService } from '../service/crud.service'
 
 @Component({
   selector: 'app-analisis',
@@ -9,7 +9,8 @@ import {ActivatedRoute, Params} from '@angular/router';
 })
 export class AnalisisComponent implements OnInit {
   Ubicaciones: any;
-  numero:number = 1;
+  numero: number = 1;
+
   constructor(public crudService: CrudService) { }
 
   ngOnInit(): void {
@@ -29,5 +30,4 @@ export class AnalisisComponent implements OnInit {
       })
     })
   }
-
 }
