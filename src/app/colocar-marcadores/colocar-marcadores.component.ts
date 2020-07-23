@@ -19,6 +19,8 @@ export class ColocarMarcadoresComponent implements OnInit {
   marcador = null;
   idMarcador: number;
   isMarcadorGuardadoBD: boolean = false;
+  permitirColocarMarcador: boolean = true;
+
   constructor(public crudService: CrudService, public router: Router) { }
 
   ngOnInit(): void {
@@ -44,6 +46,7 @@ export class ColocarMarcadoresComponent implements OnInit {
         this.distancia = this.Marcador[0].distancia;
         this.idMarcador = this.Marcador[0].id;
         this.isMarcadorGuardadoBD = true;
+        this.permitirColocarMarcador = false;
       }
     })
   }
@@ -81,7 +84,7 @@ export class ColocarMarcadoresComponent implements OnInit {
         this.mapa.removeLayer(this.marcador);
         this.isMarcadorColocadoMapa = false;
         
-      } else if (!this.isMarcadorColocadoMapa) {
+      } else if (!this.isMarcadorColocadoMapa && this.permitirColocarMarcador) {
         this.latitud = latitudLongitud.lat;
         this.longitud = latitudLongitud.lng;
         this.marcador = L.marker([latitudLongitud.lat, latitudLongitud.lng])
@@ -93,6 +96,7 @@ export class ColocarMarcadoresComponent implements OnInit {
 
   eliminarMarcador() {    
     this.mapa.removeLayer(this.marcador);
+    this.permitirColocarMarcador = true;
     this.crudService.eliminarMarcador(this.idMarcador);
     this.isMarcadorColocadoMapa = false;
     this.isMarcadorGuardadoBD = false;
