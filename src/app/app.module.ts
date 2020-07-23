@@ -19,13 +19,17 @@ import { AppComponent } from './app.component';
 import { VisualizarUbicacionMapaComponent } from './visualizar-ubicacion-mapa/visualizar-ubicacion-mapa.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ColocarMarcadoresComponent } from './colocar-marcadores/colocar-marcadores.component';
+import { AnalisisComponent } from './analisis/analisis.component';
+import { MapaComponent } from './mapa/mapa.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     VisualizarUbicacionMapaComponent,
-    ColocarMarcadoresComponent
+    ColocarMarcadoresComponent,
+    AnalisisComponent,
+    MapaComponent
   ],
   imports: [
     BrowserModule,

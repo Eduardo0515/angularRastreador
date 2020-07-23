@@ -1,11 +1,23 @@
-.navbar {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    background: black;
+
+.map-container {
+    position: absolute;
+    top: 170px;
+    left: 30px;
+    right: 30px;
+    bottom: 0;
+    margin: 35px;
+  }
+  
+  .map-frame {
+    border: 2px solid black;
+    height: 100%;
+  }
+  
+  #mapa {
+    height: 100%;
+  }
+
+  #btnAcept{
     color: white;
-    font-size: 22px;
-}
+    text-decoration: none;
+  }

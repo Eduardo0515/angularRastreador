@@ -1,0 +1,30 @@
+<div class="container col-md-10">
+    <br><br>
+    <p class="text-left"><span><h2>Historial de ubicaciones</h2></span></p>
+    <p class="text-center"><span><h5>A continuación se muestra el historial de ubicaciones en 
+        que el ganado se ha alejado del margen permitido</h5></span></p>
+    <br>
+    <div class="row">
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Latitud</th>
+                    <th scope="col">Longitud</th>
+                    <th scope="col">Visualizar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ubicacion of Ubicaciones">
+                    <th scope="row">{{ubicacion.numero}}</th>
+                    <td>{{ubicacion.fecha | date:'medium'}}</td>
+                    <td>{{ubicacion.latitud}}</td>
+                    <td>{{ubicacion.longitud}}</td>
+                    <td><a href="http://">Ver mapa</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

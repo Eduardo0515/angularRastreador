@@ -1,14 +1,48 @@
-<div class="container">
-    <div class="row justify-content-center p-2">
-      <h1>Rastreo</h1>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+
     </div>
-    <div class="form-group">
-      <input type="number" class="form-control" [(ngModel)]= "latitud" placeholder="Latitud">  
-    </div>
-    <div class="form-group">
-      <input type="number" class="form-control" [(ngModel)]= "longitud" placeholder="Longitud">  
-    </div>
-    <div class="form-group">
-      <button class="btn btn-primary" (click)="crearUbicacion()" [disabled]="!latitud || !longitud" >Aceptar</button>
+    <div id="mapa" style="width: 900px; height: 600px;"></div>
+
+    <div class="col-4">
+      <br><br>
+      <span>
+        <h2>Inserción Marcador</h2>
+      </span>
+      <div id="ingresoDatos" *ngIf="!isMarcadorGuardadoBD; else MostrarEliminar" class="container">
+        <br>
+        <h6> Presione dos veces en el mapa para insertar un marcador e inserte
+          la distancia máxima (en métros) que permitirá alejarse el ganado.
+        </h6>
+        <div class="form-group">
+          <input class="form-control" type="number" [(ngModel)]="distancia" placeholder="Distancia máxima permitida">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" [disabled]="!distancia || !isMarcadorColocadoMapa"
+            (click)="crearMarcador()">Aceptar</button>
+        </div>
+      </div>
+
+
+      <ng-template #MostrarEliminar>
+        <div class="container">
+          <br>
+          <h6>Presione el botón para eliminar el marcador actual e insertar uno nuevo</h6>
+          <div class="form-group">
+            <button class="btn btn-danger" (click)="eliminarMarcador()">Eliminar</button>
+          </div>
+          <div class="form-group">
+            <span><b>Distancia</b> </span>
+            <input class="form-control border border-primary" type="number" [(ngModel)]="distancia"
+              placeholder="Distancia máxima permitida">
+          </div>
+          <br>
+        </div>
+      </ng-template>
+
     </div>
   </div>
+
+</div>
