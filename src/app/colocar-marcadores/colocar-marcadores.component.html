@@ -10,8 +10,8 @@
       </span>
       <div id="ingresoDatos" *ngIf="!isMarcadorGuardadoBD; else MostrarEliminar" class="container">
         <br>
-        <h6> Presione dos veces en el mapa para insertar un marcador e inserte
-          la distancia máxima (en métros) que permitirá alejarse el ganado.
+        <h6> Presione dos veces en el mapa para insertar un marcador e ingrese
+          la distancia máxima (en métros) del radio que permitirá alejarse el ganado.
         </h6>
         <div class="form-group">
           <input class="form-control" type="number" [(ngModel)]="distancia" placeholder="Distancia máxima permitida">

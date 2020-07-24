@@ -34,7 +34,7 @@ export class MapaComponent implements OnInit {
   private inicializarMapa(): void {
     this.mapa = L.map('mapa').setView([16.752769803087457, -93.11428070068361], 13);
     L.tileLayer(this.urlAPIMapa, {
-      maxZoom: 18,
+      maxZoom: 20,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.mapa);
   }
